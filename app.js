@@ -6,23 +6,22 @@
 const difficultyEnum = {
   easy: 0,
   medium: 1,
-  hard: 2
+  hard: 2,
 };
 
 Object.freeze(difficultyEnum);
 
 let gameActive = false;
 let gameWon = false;
-let playerChoice = ''
-let computerChoice = ''
+let playerChoice = "";
+let computerChoice = "";
 let playerTurn = true;
 // const gameBoard = Array.from({length: 9}); // initialize with undefined values
-const gameBoard = ['', '', '', '', '', '', '', '', ''];
-const board = document.querySelector('.board')
-const cells = document.querySelectorAll('.cell')
-let gameStatus = document.querySelector('.game--status')
+const gameBoard = ["", "", "", "", "", "", "", "", ""];
+const board = document.querySelector(".board");
+const cells = document.querySelectorAll(".cell");
+let gameStatus = document.querySelector(".game--status");
 let difficulty = 0;
-
 
 const winningCombos = [
   [0, 1, 2],
@@ -32,64 +31,63 @@ const winningCombos = [
   [1, 4, 7],
   [2, 5, 8],
   [0, 4, 8],
-  [2, 4, 6]
+  [2, 4, 6],
 ];
 
-const winningMessage = () => playerTurn ? 'You Won!' : 'Computer Won';
-const drawMessage = 'Draw!';
+const winningMessage = () => (playerTurn ? "You Won!" : "Computer Won");
+const drawMessage = "Draw!";
 
 //when user clicks on X button the value 'X' gets stored
 //in the playerChoice variable
 //and the button O gets disabled
-const choiceX = document.getElementById('choiceX');
-choiceX.addEventListener('click', (e) => {
-   playerChoice = 'X'
-   computerChoice = 'O'
-   gameActive = true;
-   toggleAllCells(false);
-   choiceO.setAttribute('disabled', 'true')
+const choiceX = document.getElementById("choiceX");
+choiceX.addEventListener("click", (e) => {
+  playerChoice = "X";
+  computerChoice = "O";
+  gameActive = true;
+  toggleAllCells(false);
+  choiceO.setAttribute("disabled", "true");
 });
 
 //when user clicks on O button the value 'O' gets stored
 //in the playerChoice variable
 //and the button X gets disabled
-const choiceO = document.getElementById('choiceO');
-choiceO.addEventListener('click', (e) => {
-   playerChoice = 'O'
-   computerChoice = 'X'
-   gameActive = true;
-   toggleAllCells(false);
-   choiceX.setAttribute('disabled', 'true')
-})
+const choiceO = document.getElementById("choiceO");
+choiceO.addEventListener("click", (e) => {
+  playerChoice = "O";
+  computerChoice = "X";
+  gameActive = true;
+  toggleAllCells(false);
+  choiceX.setAttribute("disabled", "true");
+});
 
-
-let easyMode = document.getElementById('easy')
-let mediumMode = document.getElementById('medium')
-let hardMode = document.getElementById('hard')
+let easyMode = document.getElementById("easy");
+let mediumMode = document.getElementById("medium");
+let hardMode = document.getElementById("hard");
 
 // easyMode.addEventListener('click', () => {
-  
+
 //   mediumMode.disabled = true
 //   hardMode.disabled = true
 // })
 
-easyMode.addEventListener('click', function() {
+easyMode.addEventListener("click", function () {
   difficulty = difficultyEnum[this.id];
-  mediumMode.disabled = true
-  hardMode.disabled = true
-})
+  mediumMode.disabled = true;
+  hardMode.disabled = true;
+});
 
-mediumMode.addEventListener('click', function() {
+mediumMode.addEventListener("click", function () {
   difficulty = difficultyEnum[this.id];
-  easyMode.disabled = true
-  hardMode.disabled = true
-})
+  easyMode.disabled = true;
+  hardMode.disabled = true;
+});
 
-hardMode.addEventListener('click', function() {
+hardMode.addEventListener("click", function () {
   difficulty = difficultyEnum[this.id];
-  mediumMode.disabled = true
-  easyMode.disabled = true
-})
+  mediumMode.disabled = true;
+  easyMode.disabled = true;
+});
 
 // const diffcultyContainer = document.getElementsByClassName('difficulty');
 
@@ -114,7 +112,6 @@ hardMode.addEventListener('click', function() {
 //     }
 //   });
 // });
-
 
 // class Coach {
 //   constructor(player, coach){
@@ -152,8 +149,8 @@ hardMode.addEventListener('click', function() {
 
 function renderBoard() {
   cells.forEach((cell, index) => {
-      cell.innerHTML = gameBoard[index]
-  })
+    cell.innerHTML = gameBoard[index];
+  });
 
   // playerTurn = Math.round(Math.random()) === 1;
 
@@ -163,14 +160,18 @@ function renderBoard() {
 }
 
 function toggleAllCells(disable = true) {
-  cells.forEach(cell => disable ? cell.setAttribute('disabled', true) : cell.removeAttribute('disabled'));
+  cells.forEach((cell) =>
+    disable
+      ? cell.setAttribute("disabled", true)
+      : cell.removeAttribute("disabled")
+  );
 }
 
 //  choiceX.addEventListener('keyup', (e) => {
 //     const key = e.keyCode;
 //     switch (key) {
 //       case 13:  // Enter
-        
+
 //         break;
 //       case 27:  // Esc
 
@@ -181,29 +182,27 @@ function toggleAllCells(disable = true) {
 //     }
 //  })
 
- //a forEach loop that appends the chosen value to the DOM
- //after the user clicks on a cell
+//a forEach loop that appends the chosen value to the DOM
+//after the user clicks on a cell
 
- cells.forEach((cell, index) => {
+cells.forEach((cell, index) => {
+  cell.addEventListener("click", (e) => {
+    gameBoard[index] = playerChoice;
 
-  cell.addEventListener('click', (e) => {
-    gameBoard[index] = playerChoice
-    
-    renderBoard()
-    checkForWinner()
+    renderBoard();
+    checkForWinner();
     playerTurn = !playerTurn;
     // computerMove()
   });
 
-  if (!gameActive) cell.setAttribute('disabled', true);
- });
- 
+  if (!gameActive) cell.setAttribute("disabled", true);
+});
+
 function computerMove() {
   if (!playerTurn) {
-      // CURRENT LOGIC IS EASY MODE (RANDOM)
-      
-      
-      //a variable that returns a random number from 0 to 8
+    // CURRENT LOGIC IS EASY MODE (RANDOM)
+
+    //a variable that returns a random number from 0 to 8
     // let index = Math.floor(Math.random() * 8)
     //   //if the generated number lands on a cell in the array that is defined
     // while(gameBoard[index] != undefined){
@@ -228,45 +227,122 @@ function computerMove() {
         // Medium Difficulty - 1 Block
         break;
       case difficultyEnum.hard:
-        // Hard Difficulty - ALWAYS block
+        if (!blockPlayerWin()) {
+          if (!findWinningMove()) {
+            makeRandomMove();
+          }
+        }
         break;
     }
-
   }
 }
 
-  // TODO - Add a switch statement to see how many moves Player has on board
-  const playerMoves = gameBoard.filter(v => v === playerChoice).length;
+//////////////////////////////////////////////////////////// newest addition bellow
 
-  switch (playerMoves) {
-    case 0:
+function blockPlayerWin() {
+  for (let combo of winningCombos) {
+    const a = gameBoard[combo[0]];
+    const b = gameBoard[combo[1]];
+    const c = gameBoard[combo[2]];
 
-      break;
-    case 1:
+    // block player if they are about to win
+    if (
+      (a === playerChoice && b === playerChoice && !c) ||
+      (b === playerChoice && c === playerChoice && !a) ||
+      (a === playerChoice && c === playerChoice && !b)
+    ) {
+      if (a !== computerChoice && a !== playerChoice) {
+        gameBoard[combo[0]] = computerChoice;
+      } else if (b !== computerChoice && b !== playerChoice) {
+        gameBoard[combo[1]] = computerChoice;
+      } else if (c !== computerChoice && c !== playerChoice) {
+        gameBoard[combo[2]] = computerChoice;
+      }
 
-      break;
-    case 2:
-
-      break;
-    case 3:
-
-      break;
-    case 4:
-
-      break;
-    case 5:
-
-      break;
+      renderBoard();
+      if (!checkForWinner()) {
+        playerTurn = true;
+      }
+      return true;
+    }
   }
+  return false;
+}
 
-  gameBoard[index] = computerChoice
-  renderBoard(gameBoard)
-  if (gameBoard.every(cell => cell !== undefined)) {
-    //all cells are filled, prevent any further moves
-      cells.forEach(cell => cell.setAttribute('disabled', true));
-      // return
-    } 
+function findWinningMove() {
+  for (let combo of winningCombos) {
+    const a = gameBoard[combo[0]];
+    const b = gameBoard[combo[1]];
+    const c = gameBoard[combo[2]];
 
+    // check if computer has oportunity to win
+    if (
+      (a === computerChoice && b === computerChoice && !c) ||
+      (b === computerChoice && c === computerChoice && !a) ||
+      (a === computerChoice && c === computerChoice && !b)
+    ) {
+      if (a !== computerChoice && a !== playerChoice) {
+        gameBoard[combo[0]] = computerChoice;
+      } else if (b !== computerChoice && b !== playerChoice) {
+        gameBoard[combo[1]] = computerChoice;
+      } else if (c !== computerChoice && c !== playerChoice) {
+        gameBoard[combo[2]] = computerChoice;
+      }
+
+      renderBoard();
+      if (!checkForWinner()) {
+        playerTurn = true;
+      }
+      return true;
+    }
+  }
+  return false;
+}
+
+function makeRandomMove() {
+  // make a random move
+  let randomIndex = Math.floor(Math.random() * 9);
+
+  if (!gameBoard[randomIndex]) {
+    gameBoard[randomIndex] = computerChoice;
+    renderBoard();
+    if (!checkForWinner()) {
+      playerTurn = true;
+    }
+  } else {
+    makeRandomMove();
+  }
+}
+
+///////////////////////////////////////////////////// newest addition above
+
+function blockPlayerWin() {}
+
+// TODO - Add a switch statement to see how many moves Player has on board
+const playerMoves = gameBoard.filter((v) => v === playerChoice).length;
+
+switch (playerMoves) {
+  case 0:
+    break;
+  case 1:
+    break;
+  case 2:
+    break;
+  case 3:
+    break;
+  case 4:
+    break;
+  case 5:
+    break;
+}
+
+gameBoard[index] = computerChoice;
+renderBoard(gameBoard);
+if (gameBoard.every((cell) => cell !== undefined)) {
+  //all cells are filled, prevent any further moves
+  cells.forEach((cell) => cell.setAttribute("disabled", true));
+  // return
+}
 
 function checkForWinner() {
   // for(let combo of winningCombos){
@@ -277,36 +353,36 @@ function checkForWinner() {
   // }
   // return false
 
-    if (gameBoard.filter(v => v !== '').length > 4) {
-      let len = winningCombos.length;
-  
-      for (let i = 0; i < len; i++) {
-        const winCondition = winningCombos[i]
+  if (gameBoard.filter((v) => v !== "").length > 4) {
+    let len = winningCombos.length;
 
-        const a = gameBoard[winCondition[0]]
-        const b = gameBoard[winCondition[1]]
-        const c = gameBoard[winCondition[2]]
+    for (let i = 0; i < len; i++) {
+      const winCondition = winningCombos[i];
 
-        if(a !== '' && a === b && b === c) {
-            gameWon = true;
-            break
-        }
-      }
+      const a = gameBoard[winCondition[0]];
+      const b = gameBoard[winCondition[1]];
+      const c = gameBoard[winCondition[2]];
 
-      if (roundWon) {
-        gameStatus.innerHTML = winningMessage()
-        gameActive = false
-        return true;
-      }
-
-      let roundDraw = !gameBoard.includes('')
-
-      if (roundDraw) {
-        gameStatus.innerHTML = drawMessage
-        gameActive = false
-        return true;
+      if (a !== "" && a === b && b === c) {
+        gameWon = true;
+        break;
       }
     }
 
-    return false;
+    if (roundWon) {
+      gameStatus.innerHTML = winningMessage();
+      gameActive = false;
+      return true;
+    }
+
+    let roundDraw = !gameBoard.includes("");
+
+    if (roundDraw) {
+      gameStatus.innerHTML = drawMessage;
+      gameActive = false;
+      return true;
+    }
+  }
+
+  return false;
 }
